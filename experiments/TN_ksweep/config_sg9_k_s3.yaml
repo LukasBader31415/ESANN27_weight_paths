@@ -1,0 +1,28 @@
+# Versuchsplan SG9 · Teil A, K-Verlauf Seed 3 (arbeitspakete.md „SG9“). Status: beschreibend, kein Pruefungslauf.
+# Kopie von config_sig_explore.yaml; nur K (2–20), Varianten, Kopf, title, status_note geaendert -> Cache-Signatur
+# 5dfd9972f654650e unveraendert. Nur Sigmoid G/CW xi 10 const .003 x K 2–20 x 5 reps; K 2/6/12 aus SG_explore im Cache.
+# Identitaet, frozen, frozen_oracle_* fuer K 2–20 liegen aus TN_ksweep im selben Cache (werden nicht hier aufgefuehrt).
+plan: H0
+s: 2.5
+w_heim: 0.8
+data_seed: 3            # D16/D18: Datensatz-Seed 3
+val:  {stream: 10, n_per_cluster: 50}    # 600 Punkte, nur Epochenwahl Best_val
+test: {stream: 11, n_per_cluster: 250}   # 3000 Punkte, Berichtsmenge
+T: 400
+eta: 0.003
+eta0: 0.003
+tau: 133
+patience: 1000000000        # D20: kein Early Stop
+patience_decay: 1000000000
+eps_loss: 1.0e-4
+eps_weight: 1.0e-3
+base_seed: 42           # Modell-Seed = base_seed + rep
+reps: [0, 1, 2, 3, 4]
+K: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+title: "Versuchsplan SG9 · K-Verlauf Seed 3 (Sigmoid ξ 10, beschreibend)"
+status_note: "beschreibend (K-Verlauf für die Zerlegungsabbildung); Seeds 3–5 vor dem Lauf festgelegt"
+variants: []                 # Identitaet/Referenzen aus TN_ksweep im Cache
+sig_levels: [G, CW]
+sig_xis: [10]
+sig_plans:
+  - {eta0: 0.003}

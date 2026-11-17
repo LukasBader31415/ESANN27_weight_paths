@@ -1,0 +1,55 @@
+# Versuchsplan SG · Lauf 2 SG_confirm_H0s4 (arbeitspakete.md): Status Pruefung – Kriterien endgueltig vor dem Lauf (SG4).
+# Zweiter Datensatz-Seed 4 -> neue Cache-Signatur e0df24cd0d4bcce0, neue Startmengen (gewollt); Seed-3-Caches unberuehrt.
+# Sigmoid: G, CW x xi 10 (gewaehlt ueber Val nach Lauf 1) x 3 Plaene x K {2, 6, 12} x 5 reps = 90 Fits
+# Identitaet: G, CW x 3 Plaene x K x 5 reps = 90 Fits; Referenzen (eta = 0): frozen, frozen_oracle_G/CW,
+# single_A/B/C x K x 5 reps = 90 Fits. Summe 270 Fits.
+# SPERRE (run_tn.check_criteria_lock): Start nur, wenn criteria_commit Vorfahre von HEAD ist und dort
+# arbeitspakete.md „Kriterien SG (festgelegt vor Lauf 2)“ mit „**Status: endgültig“ sowie criteria_file mit
+# status: endgueltig und xi_bestaetigung == sig_xis steht.
+plan: H0
+s: 2.5
+w_heim: 0.8
+data_seed: 4            # zweiter Datensatz-Seed (Bestaetigung)
+val:  {stream: 10, n_per_cluster: 50}
+test: {stream: 11, n_per_cluster: 250}
+T: 400
+eta: 0.003
+eta0: 0.003
+tau: 133
+patience: 1000000000        # kein Early Stop (D20)
+patience_decay: 1000000000
+eps_loss: 1.0e-4
+eps_weight: 1.0e-3
+base_seed: 42
+reps: [0, 1, 2, 3, 4]
+K: [2, 6, 12]
+title: "Versuchsplan SG · Lauf 2 (Sigmoid, Prüfung, Seed 4)"
+status_note: "Prüfung – Kriterien endgültig vor dem Lauf festgelegt (siehe Kriterien-Commit); Entscheidung mit eval_sigmoid.py"
+criteria_lock: true
+criteria_commit: a32a15cf226353bc164a83338b5b22d6621cb31d   # Commit mit den endgueltigen Kriterien (SG4, 19.10.)
+criteria_file: experiments/TN_ksweep/criteria_sg.yaml
+summary_extra: |
+  ## Datensatz Seed 4 gegen Seed 3 (Kennwerte vor dem Lauf, `experiments/TN_ksweep/datensatz_vergleich.py`)
+
+  Seed 4 liegt nach Lukas' Vergleich der Seeds 3–8 innerhalb der Streuung (Entscheidung 19.10.). Hinweis: **asymmetrisch, Klasse 1 sauberer** (Heimat-Gewicht Klasse 1 höher als Klasse 0; global B > A).
+
+  | | Seed 3 | Seed 4 |
+  |---|---|---|
+  | Zentren: Versuche max (A/B/C), Mindestabstand eingehalten | 3/3/3, ja | 2/8/7, ja |
+  | Heimat Klasse 0 / 1 | A / B | A / B |
+  | s_v (A, B, C, N) | 37.38, 34.03, 38.16, 20.35 | 33.94, 39.96, 35.72, 20.40 |
+  | W_TRUE global (A, B, C, N) | .359, .303, .202, .135 | .276, .416, .169, .140 |
+  | W_TRUE Klasse 0 | .777, .074, .087, .062 | .677, .138, .098, .088 |
+  | W_TRUE Klasse 1 | .107, .714, .110, .069 | .070, .797, .075, .058 |
+  | Orakel-Winkel global / Kl. 0 / Kl. 1 (rad) | .181 / .557 / .489 | .213 / .448 / .581 |
+  | Medoid-Referenz single_A / single_B / equal / global / label | .717 / .600 / .756 / .788 / .833 | .711 / .718 / .717 / .747 / .821 |
+variants: [G_const, G_decay, CW_const, CW_decay, frozen, frozen_oracle_G, frozen_oracle_CW, single_A, single_B, single_C]
+lr_levels: [G, CW]
+lr_plans:
+  - {eta0: 0.01}             # Identitaet const .01
+sig_levels: [G, CW]
+sig_xis: [10]                # xi_bestaetigung aus criteria_sg.yaml (gewaehlt ueber Val nach Lauf 1)
+sig_plans:
+  - {eta0: 0.003}
+  - {eta0: 0.01}
+  - {eta0: 0.003, tau: 133}

@@ -1,0 +1,19 @@
+# Versuchsplan TN (arbeitspakete.md), D16-D19. Voller Sweep: 10 Varianten x K 2-20 x 5 reps = 950 Fits (Hub, D17).
+plan: H0
+s: 2.5
+w_heim: 0.8
+data_seed: 3            # D16/D18: Datensatz-Seed 3
+val:  {stream: 10, n_per_cluster: 50}    # 600 Punkte, nur Epochenwahl Best_val
+test: {stream: 11, n_per_cluster: 250}   # 3000 Punkte, Berichtsmenge
+T: 400
+eta: 0.003
+eta0: 0.003
+tau: 133
+patience: 1000000000        # D20: kein Early Stop, alle Fits genau T = 400 Epochen (vorher 20)
+patience_decay: 1000000000   # decay-Varianten ohne Abbruch (wie bisher)
+eps_loss: 1.0e-4
+eps_weight: 1.0e-3
+base_seed: 42           # Modell-Seed = base_seed + rep
+reps: [0, 1, 2, 3, 4]
+K: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+variants: [G_const, G_decay, CW_const, CW_decay, frozen, frozen_oracle_G, frozen_oracle_CW, single_A, single_B, single_C]

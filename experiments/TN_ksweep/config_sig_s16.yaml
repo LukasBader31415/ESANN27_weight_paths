@@ -1,0 +1,32 @@
+# Versuchsplan SG9 · Teil B, Seed 16 (arbeitspakete.md „SG9“). Status: beschreibende Erweiterung im SG7-Raster;
+# das E1–E5-Urteil (predictions_sg7.yaml) bleibt auf Seeds 9–15, Seed 16 wird nur beschreibend gezeigt. Kopie von config_sig_s9.yaml.
+# Je Seed: Sigmoid xi 10 (90) + Identitaet (90) + frozen, frozen_oracle_G/CW (45) = 225 Fits; sonst wie Lauf 2.
+plan: H0
+s: 2.5
+w_heim: 0.8
+data_seed: 16
+val:  {stream: 10, n_per_cluster: 50}
+test: {stream: 11, n_per_cluster: 250}
+T: 400
+eta: 0.003
+eta0: 0.003
+tau: 133
+patience: 1000000000        # kein Early Stop (D20)
+patience_decay: 1000000000
+eps_loss: 1.0e-4
+eps_weight: 1.0e-3
+base_seed: 42
+reps: [0, 1, 2, 3, 4]
+K: [2, 6, 12]
+title: "Versuchsplan SG9 · Seed 16 (Sigmoid ξ 10 gegen Identität) – beschreibende Erweiterung"
+status_note: "beschreibende Erweiterung, E1–E5-Urteil bleibt auf Seeds 9–15"
+variants: [G_const, G_decay, CW_const, CW_decay, frozen, frozen_oracle_G, frozen_oracle_CW]
+lr_levels: [G, CW]
+lr_plans:
+  - {eta0: 0.01}             # Identitaet const .01
+sig_levels: [G, CW]
+sig_xis: [10]
+sig_plans:
+  - {eta0: 0.003}
+  - {eta0: 0.01}
+  - {eta0: 0.003, tau: 133}

@@ -1,0 +1,43 @@
+# Versuchsplan SG7 · Erwartungen E1–E5, festgelegt VOR dem Lauf SG_seeds_H0s9-15 (Commit vor dem Hub-Start).
+# Quelle: beschreibende Befunde aus Seeds 3–8 (SG6-Auswertung im Chat, Auftrag SG7 Teil 1).
+status: festgelegt
+festgelegt_am: 2026-10-20
+xi: 10                         # im Wiki nu = 10
+mittel: "alle Groessen je Seed: Mittel ueber K {2, 6, 12} x 5 reps, gepaart je (K, rep), Test-BA, xi = 10"
+erwartungen:
+  E1_G_gewinn:
+    groesse: "BA_end(Sigmoid) - BA_end(Identitaet)"
+    plaene: [const_0.003]
+    ebene: G
+    erfuellt_wenn: ">= +0.02"
+  E2_CW_gewinn:
+    groesse: "BA_end(Sigmoid) - BA_end(Identitaet)"
+    plaene: [const_0.003]
+    ebene: CW
+    erfuellt_wenn: "> 0"
+  E3_sigmoid_ersetzt_fruehstopp:
+    groesse: "BA_end(Sigmoid) - BA_best_val(Identitaet)"
+    plaene: [const_0.003, const_0.01]
+    ebene: {G: ">= 0", CW: ">= -0.01"}
+    erfuellt_wenn: "je Plan"
+  E4_stehenbleiben:
+    groesse: "BA_best_val(Sigmoid) - BA_end(Sigmoid)"
+    plaene: [const_0.003, const_0.01]
+    ebene: [G, CW]
+    erfuellt_wenn: "<= 0.015"
+  E5_keine_ecke:
+    groesse: "Anteil Fits mit max alpha^2 > .99 (Sigmoid, mind. eine Klasse)"
+    plaene: [const_0.003, const_0.01, decay_0.003_t133]
+    ebene: [G, CW]
+    erfuellt_wenn: "<= 0.20"
+bewertung:
+  seeds: [9, 10, 11, 12, 13, 14, 15]
+  je_erwartung: "Anzahl Seeds (von 7), auf denen sie erfuellt ist (bei mehreren Plaenen/Ebenen: alle Zellen der Erwartung erfuellt)"
+  gestuetzt: "auf >= 6 von 7 Seeds erfuellt; sonst nicht gestuetzt"
+  toleranz: 1.0e-9             # Gleitkomma-Toleranz wie in SG6
+  zusaetzlich_zeigen: [3, 4, 5, 6, 7, 8]   # Herkunft der Erwartungen: getrennt markieren, nicht in die Bewertung einrechnen
+ohne_erwartung:
+  - "CW-End-Gewinn-Verteilung ueber alle 13 Seeds"
+  - "Luecke Train - Val (Sigmoid, Identitaet, frozen)"
+  - "Zerlegung Strang A je Seed (frozen -> + Gewichte, Identitaet End / Identitaet Best_val / Sigmoid End, frozen_oracle_CW als Bezug)"
+  - "Anteil echte Ecke mit Identitaet (B1)"

@@ -1,0 +1,32 @@
+# Versuchsplan SG7 · SG_seeds_H0s9-15, Seed 11 (arbeitspakete.md „Erwartungen SG7“). Status: Pruefung der Erwartungen E1–E5
+# (experiments/TN_ksweep/predictions_sg7.yaml, committet VOR dem Lauf; summary.md nennt den Commit des Laufs). Kopie von config_sig_s5.yaml.
+# Je Seed: Sigmoid xi 10 (90) + Identitaet (90) + frozen, frozen_oracle_G/CW (45) = 225 Fits; sonst wie Lauf 2.
+plan: H0
+s: 2.5
+w_heim: 0.8
+data_seed: 11
+val:  {stream: 10, n_per_cluster: 50}
+test: {stream: 11, n_per_cluster: 250}
+T: 400
+eta: 0.003
+eta0: 0.003
+tau: 133
+patience: 1000000000        # kein Early Stop (D20)
+patience_decay: 1000000000
+eps_loss: 1.0e-4
+eps_weight: 1.0e-3
+base_seed: 42
+reps: [0, 1, 2, 3, 4]
+K: [2, 6, 12]
+title: "Versuchsplan SG7 · Seed 11 (Sigmoid ξ 10 gegen Identität) – Prüfung der Erwartungen E1–E5, predictions_sg7.yaml"
+status_note: "Prüfung der Erwartungen E1–E5 (predictions_sg7.yaml, festgelegt vor dem Lauf); kein neues Urteil zu H-S"
+variants: [G_const, G_decay, CW_const, CW_decay, frozen, frozen_oracle_G, frozen_oracle_CW]
+lr_levels: [G, CW]
+lr_plans:
+  - {eta0: 0.01}             # Identitaet const .01
+sig_levels: [G, CW]
+sig_xis: [10]
+sig_plans:
+  - {eta0: 0.003}
+  - {eta0: 0.01}
+  - {eta0: 0.003, tau: 133}

@@ -1,0 +1,17 @@
+status: endgueltig            # vorlaeufig festgelegt 2026-10-19 vor Ansicht von SG_explore_H0; endgueltig 2026-10-19 nach Lauf 1
+festgelegt_am: 2026-10-19
+aenderung: "nach Lauf 1 nur mit schriftlicher Begruendung in arbeitspakete.md; endgueltig vor Start von Lauf 2 (Commit)"
+aenderungen:
+  - "2026-10-19 K1 neu definiert nach Lauf 1 (Exploration): Messfehler der Operationalisierung – min alpha^2 < 1e-3 zaehlt auch das gewollte Abschalten der Rausch-View N als Ecke; gemeint war Kollaps auf eine View. Schwelle unveraendert. K4 bewusst nicht geaendert."
+xi_bestaetigung: 10           # gewaehlt ueber Val (Lauf 1): mittlere Val-BA am Ende ueber G/CW und 3 Plaene xi 5 .815, xi 10 .828, xi 20 .826
+mittel: "je xi und Ebene, Mittel ueber K {2,6,12} und 5 reps, gepaart je (K, rep) gegen Identitaet gleicher Plan"
+kriterien:
+  K1_ecke:        {kennzahl: "Anteil Fits mit max alpha^2 > 0.99 in mindestens einer Klasse am Ende", plaene: [const_0.003, const_0.01], schwelle: "<= 0.20"}
+  K2_best_minus_end: {kennzahl: "BA_best_val - BA_end (Test)", plaene: [const_0.003, const_0.01], schwelle: "<= 0.01"}
+  K3_gewinn_end:  {kennzahl: "BA_end(Sigmoid) - BA_end(Identitaet)", plaene: [const_0.003], schwelle: ">= +0.02"}
+  K4_luecke:      {kennzahl: "BA_train - BA_val am Ende", plaene: [const_0.003, const_0.01, decay_0.003_t133], schwelle: "<= 0.01"}
+  K5_kein_rueckschritt: {kennzahl: "BA_best_val(Sigmoid) - BA_best_val(Identitaet)", plaene: [const_0.003, const_0.01, decay_0.003_t133], schwelle: ">= -0.01"}
+entscheidung:
+  bestaetigt: "fuer xi 10 K1-K5 auf beiden Ebenen (G und CW) erfuellt"
+  teilweise:  "K1-K5 nur auf einer Ebene erfuellt"
+  verworfen:  "sonst"

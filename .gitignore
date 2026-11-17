@@ -1,0 +1,12 @@
+# local scratch, environments, caches
+.tmp/
+.venv/
+venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# outputs of the notebook and of a full re-run
+output/
+cache/
+logs/

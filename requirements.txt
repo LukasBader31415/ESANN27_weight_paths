@@ -1,0 +1,14 @@
+# Python 3.12. Versions as used for the paper runs (lock file of the development environment, 2026-10-15).
+numpy==1.26.4            # numpy<2 required: proto-dist-ml 1.0.1 fails with numpy 2.x
+scipy==1.17.1
+scikit-learn==1.9.1
+pandas==3.0.6
+pyarrow==25.0.1          # parquet epoch logs; pyarrow 26+ requires numpy>=2
+matplotlib==3.11.2
+pyyaml==6.0.3
+joblib==1.6.0
+threadpoolctl==3.7.0
+proto-dist-ml==1.0.1     # Paassen, GPL-3.0-or-later; relational neural gas for the initial prototypes
+# notebook execution
+ipykernel==7.4.0
+nbconvert==7.17.2
