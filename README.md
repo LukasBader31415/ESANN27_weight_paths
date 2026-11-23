@@ -2,7 +2,7 @@
 
 Code and aggregated results for
 
-> Lukas Bader and Dietlind Zühlke. *When do relevance weights learn?* ESANN 2027 (submitted).
+> Lukas Bader and Dietlind Zühlke. *When do relevance weights learn?* ESANN 2027 (submitted, paper ID ES2027-119).
 
 ```bibtex
 @inproceedings{bader_2027_weights,
@@ -10,7 +10,7 @@ Code and aggregated results for
   title     = {When do relevance weights learn?},
   booktitle = {European Symposium on Artificial Neural Networks, Computational Intelligence and Machine Learning (ESANN 2027)},
   year      = {2027},
-  note      = {submitted}
+  note      = {submitted, paper ID ES2027-119}
 }
 ```
 
