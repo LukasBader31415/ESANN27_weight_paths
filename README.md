@@ -16,7 +16,7 @@ Code and aggregated results for
 
 ## Summary
 
-On synthetic multi-view data with known relevances, we decompose the gain of multi-matrix median GLVQ (global weights G, class-wise weights CW) into prototype learning and weight learning. With the identity in the GLVQ cost, the view weights pass a state of high validation accuracy and often continue to a corner where a single view carries all weight, while the training cost keeps decreasing. Replacing the identity with a sigmoid stops the weight path for G and slows it for CW, and improves balanced accuracy over the identity at the end of training on all 15 datasets.
+On synthetic multi-view data with known relevances, we decompose the gain of multi-matrix median GLVQ (global weights G, class-wise weights CW) into prototype learning and weight learning. With the identity in the GLVQ cost, the view weights pass a state of high validation accuracy and often continue to a corner where a single view carries almost all weight (max α_v² > .99), while the training cost keeps decreasing. Replacing the identity with a sigmoid stops the weight path for G and slows it for CW, and improves balanced accuracy over the identity at the end of training on all 15 datasets.
 
 ## Quickstart
 
@@ -42,6 +42,7 @@ experiments/TN_ksweep/config_*.yaml configs of the paper runs (see below)
 experiments/TN_ksweep/predictions_sg7.yaml   expectations E1-E5, fixed before datasets 9-15
 experiments/TN_ksweep/criteria_sg.yaml       criteria for choosing beta (exploration, datasets 3 and 4)
 experiments/TN_ksweep/eval_*.py, m_textzahlen_fig2.py   evaluation scripts that produced results/public/
+experiments/TN_ksweep/count_init_rescues.py  recomputes the initial prototypes, counts collapse rescues
 results/public/                     aggregated results that feed the paper (CSV), example run for Fig. 2
 notebooks/reproduce_paper.ipynb     Table 1, Fig. 1, Fig. 2, numbers, single re-fit
 docs/numbers.md                     every number in the paper -> file / column / row
@@ -61,7 +62,17 @@ The paper does not number the datasets; this repository does. A dataset is ident
 | Descriptive | 16, 17 | run later, reported without a verdict |
 | Table 1 | all 15 (3–17) | K ∈ {2, 6, 12}, five repetitions; corner counts over 3–15 |
 
-A repetition `rep` uses its own seed for the initial prototypes (`base_seed + rep`, `base_seed = 42`) on the same data; within a repetition all variants start from the same set of initial prototypes with equal weights.
+A repetition `rep` uses its own seed for the initial prototypes (`base_seed + rep`, `base_seed = 42`) on the same data; within a repetition all variants start from the same set of initial prototypes with equal weights (see *Initialization and scaling*).
+
+### Initialization and scaling
+
+As implemented in the code of the paper runs:
+
+- **Equal start weights**: α_v = 1/√V, i.e. α_v² = 1/V (V = 4 views). This is the default of both models when no `v_init` is given (`src/models/M3GLVQ_global_decoupled.py` and `M3GLVQ_label_coupled_WSOM.py`, `_vWeights`); `experiments/TN_ksweep/run_tn.py` (`common_init`) uses the same weights for the dissimilarity of the initialization.
+- **Initial prototypes per class**: relational neural gas (`proto_dist_ml.rng.RNG(K)`, `is_squared=True`) on the squared equally weighted dissimilarity of the class's training points; each of the K prototypes is moved to the closest data point of its class (`src/common/proto_init.py`, `init_class_prototypes`, called by `run_tn.common_init`).
+- **Seeds**: per class from `base_seed + rep` (`base_seed = 42`), the class label and the view tag `global` (SHA-256 of `"<seed>|global|<label>"`, combined with the seed by `numpy.random.SeedSequence`; `proto_init._seed_for`). There is one start set per (dataset, K, repetition), shared by all variants (`run_tn.preset_init`; every fit checks that it started from this set).
+- **Collapse handling**: if the canonical seed gives fewer than K distinct points, up to `MAX_INIT_RETRIES = 8` alternative deterministic seeds (view tags `global#retry1`, …) are tried; the first with K distinct points is used, otherwise `DegenerateInitError` is raised. The rescue log was off in the paper runs (`RESCUE_LOG_PATH = None`). Recomputed with `experiments/TN_ksweep/count_init_rescues.py` (initialization only, no fits, a few minutes): of the 930 class initializations of the paper runs (465 start sets: datasets 3–17 with K ∈ {2, 6, 12}, and K = 2, …, 20 on datasets 3–5), 18 (1.9 %) needed an alternative seed (15 the first, 3 the second); in the runs of Table 1 (K ∈ {2, 6, 12}), 5 of 450 (1.1 %). The recomputed start sets are identical to those of the stored runs (example run and `reference_fit.csv`).
+- **Scaling**: each view matrix is the Euclidean distance matrix of that view divided by its maximum pairwise distance on the training data (`src/toy/toy_heimatview.py`, `make_D_blocks`, called by `run_tn.build_data`); validation and test distances to the training points are divided by the same factor (`run_tn.build_data`, `scale`).
 
 ### Configs and result folders
 

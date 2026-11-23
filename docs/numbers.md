@@ -22,6 +22,12 @@ In T1, `groesse` names the quantity: `plus_id_end` = identity at the end of trai
 | Abstract, Intro (contribution 3) | sigmoid better than identity at the end on all 15 datasets | T1s | `sig_end` > `id_end` per `seed`, both levels (15/15 each; also Table 1, *sigmoid wins*, column *identity end*) |
 | Intro (contribution 2) | training cost keeps decreasing after the best validation epoch in all runs; training accuracy falls in most | KB | `kosten_sinkt` (225/225 per level), `trainba_sinkt` (G 220/225, CW 150/225) |
 
+## Section 2, method
+
+| Location | Number | File | Column / row |
+|---|---|---|---|
+| Text | equal weights, relational neural gas initialization, scaling by the training maximum | code | equal weights α_v² = 1/V: `src/models/*.py` (`_vWeights`, default without `v_init`); initial prototypes: `src/common/proto_init.py` (`init_class_prototypes`), `experiments/TN_ksweep/run_tn.py` (`common_init`); scaling: `src/toy/toy_heimatview.py` (`make_D_blocks`), `run_tn.build_data` (`scale`); see README, *Initialization and scaling* |
+
 ## Section 3, setup
 
 | Location | Number | File | Column / row |
@@ -60,7 +66,7 @@ In T1, `groesse` names the quantity: `plus_id_end` = identity at the end of trai
 | Text | 225 identity runs per variant | KB | rows per `level`: 15 datasets × K {2, 6, 12} × 5 repetitions |
 | Text | cost at the end lower than at the best validation epoch in all runs | KB | `kosten_sinkt`: 225/225 (G and CW); also TZ `Anteil Σμ(Ende) < Σμ(Best_val)` |
 | Text | training BA drops in 220 of 225 (G), 150 of 225 (CW) | KB | `trainba_sinkt` sum per `level`; also TZ `Anteil Train-BA(Ende) < Train-BA(Best_val)` |
-| Text | depending strongly on the dataset (CW) | KB | `trainba_sinkt` per dataset (`sig` = cache signature of the dataset), `level` = `CW` |
+| Text | highly dataset-dependent (CW) | KB | `trainba_sinkt` per dataset (`sig` = cache signature of the dataset), `level` = `CW` |
 | Fig. 2 caption | corner: max. α_v² > .99 | code | `experiments/TN_ksweep/eval_sigmoid.py`, `ECKE_ECHT = 0.99` |
 
 ## Section 4.3, sigmoid
